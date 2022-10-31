@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Treinos</a>
+    <a class="btn btn-primary" href="{{ url_for('login') }}">Login</a>
+    <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+    <a class="btn btn-primary" href="{{ url_for('novo') }}">Novo Treino</a>
+
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>Nome</th>
+                <th>Nível</th>
+                <th>Objetivo</th>
+                <th>Foco</th>
+                <th>Treino A</th>
+                <th>Treino B</th>
+                <th>Treino C</th>
+                <th>Treino D</th>
+                <th>Treino E</th>
+                <th>Treino F</th>
+                <th>Editar</th>
+                <th>Deletar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for treino in treinos %}
+            <tr>
+                <td>{{ treino.nome }}</td>
+                <td>{{ treino.nivel }}</td>
+                <td>{{ treino.objetivo }}</td>
+                <td>{{ treino.foco }}</td>
+                <td><a href="{{ url_for('treino', id=treino.treino_a) }}">Treino A</a></td>
+                <td><a href="{{ url_for('treino', id=treino.treino_b) }}">Treino B</a></td>
+                <td><a href="{{ url_for('treino', id=treino.treino_c) }}">Treino C</a></td>
+                <td><a href="{{ url_for('treino', id=treino.treino_d) }}">Treino D</a></td>
+                <td><a href="{{ url_for('treino', id=treino.treino_e) }}">Treino E</a></td>
+                <td><a href="{{ url_for('treino', id=treino.treino_f) }}">Treino F</a></td>
+                <td><a href="{{ url_for('editar', id=treino.id) }}">Editar</a></td>
+                <td><a href="{{ url_for('deletar', id=treino.id) }}">Deletar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+    <a class="btn btn-primary" href="{{ url_for('index') }}">Treinos</a>
+    <a class="btn btn-primary" href="{{ url_for('login') }}">Login</a>
+    <a class="btn btn-danger" href="{{ url_for('logout') }}">Logout</a>
+    <a class="btn btn-primary" href="{{ url_for('novo') }}">Novo Treino</a>
+
+    <table class="table table-striped table-responsive table-bordered">
+        <thead class="thead-default">
+            <tr>
+                <th>Nome</th>
+                <th>Músculos</th>
+                <th>Exercícios</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ treino_musculos_exercicios[0].nome }}</td>
+                <td>
+                    <li>{{ treino_musculos_exercicios[1][0].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[1][1].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[1][2].nome }}</li>
+                </td>
+                <td>
+                    <li>{{ treino_musculos_exercicios[2][0].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][1].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][2].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][3].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][4].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][5].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][6].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][7].nome }}</li>
+                    <li>{{ treino_musculos_exercicios[2][8].nome }}</li>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+{% endblock %}

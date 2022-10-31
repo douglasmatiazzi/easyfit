@@ -1,0 +1,65 @@
+{% extends "template.html" %}
+{% block conteudo %}
+
+    <form class="formularioJogo" action="{{ url_for('atualizar') }}" method="post" enctype="multipart/form-data">
+
+        <figure class="img-thumbnail col-md-4 formularioImagem">
+            <img class="img-fluid" src="{{ url_for('imagem', nome_arquivo=capa_treino) }}">
+            <figcaption>
+                <label class="fileContainer">
+                    Mudar Capa
+                    <input type="file" name="arquivo" accept=".jpg">
+                </label>
+            </figcaption>
+        </figure>
+
+        <fieldset>
+            <input type="hidden" name="id" value="{{ id }}">
+            {{ form.csrf_token() }}
+            <div class="form-group inputBox">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.nivel.label(class="form-label") }}
+                {{ form.nivel(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.objetivo.label(class="form-label") }}
+                {{ form.objetivo(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.foco.label(class="form-label") }}
+                {{ form.foco(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_a.label(class="form-label") }}
+                {{ form.treino_a(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_b.label(class="form-label") }}
+                {{ form.treino_b(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_c.label(class="form-label") }}
+                {{ form.treino_c(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_d.label(class="form-label") }}
+                {{ form.treino_d(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_e.label(class="form-label") }}
+                {{ form.treino_e(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.treino_f.label(class="form-label") }}
+                {{ form.treino_f(class="form-control") }}
+            </div>
+            <div class="form-group buttons">
+                {{ form.salvar(class="btn btn-primary") }}
+                <a class="btn btn-danger" href="{{ url_for('index') }}">Voltar</a>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
