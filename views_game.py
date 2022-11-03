@@ -1,7 +1,8 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_from_directory
 from easyfit import app, db
 from models import Musculo, RelacaoMusculo, Exercicio, RelacaoExercicio, Treino, TreinoCompleto
-from helpers import recupera_imagem, deleta_arquivo, FormularioTreinoCompleto
+from helpers import recupera_imagem, deleta_arquivo, FormularioTreinoCompleto, FormularioTreinoDiario, \
+                    FormularioExercicio
 import time
 
 @app.route('/')
@@ -10,20 +11,33 @@ def index():
     return render_template('lista.html', titulo='Treinos Completos', treinos=lista_treino)
 
 
-@app.route('/novo')
-def novo():
+@app.route('/novo_treino_completo')
+def novo_treino_completo():
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
-        return redirect(url_for('login', proxima=url_for('novo')))
+        return redirect(url_for('login', proxima=url_for('novo_treino_completo')))
     form = FormularioTreinoCompleto()
-    return render_template('novo.html', titulo='Novo Treino', form=form)
+    return render_template('novo_treino_completo.html', titulo='Novo Treino', form=form)
 
+@app.route('/novo_treino_diario')
+def novo_treino_diario():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect(url_for('login', proxima=url_for('novo_treino_diario')))
+    form = FormularioTreinoDiario()
+    return render_template('novo_treino_diario.html', titulo='Novo Treino Diário', form=form)
+
+@app.route('/novo_exercicio')
+def novo_exercicio():
+    if 'usuario_logado' not in session or session['usuario_logado'] == None:
+        return redirect(url_for('login', proxima=url_for('novo_exercicio')))
+    form = FormularioExercicio()
+    return render_template('novo_exercicio.html', titulo='Novo Exercício', form=form)
 
 @app.route('/criar', methods=['POST', ])
 def criar():
     form = FormularioTreinoCompleto(request.form)
 
     if not form.validate_on_submit():
-        return redirect(url_for('novo'))
+        return redirect(url_for('novo_treino_completo'))
 
     nome = form.nome.data
     nivel = form.nivel.data
@@ -51,6 +65,96 @@ def criar():
     upload_path = app.config['UPLOAD_PATH']
     timestamp = time.time()
     arquivo.save(f'{upload_path}/capa{novo_treino.id}-{timestamp}.jpg')
+
+    return redirect(url_for('index'))
+
+@app.route('/criar_treino_diario', methods=['POST', ])
+def criar_treino_diario():
+    form = FormularioTreinoDiario(request.form)
+
+    if not form.validate_on_submit():
+        return redirect(url_for('novo_treino_diario'))
+
+    nome = form.nome.data
+    musculo_1 = form.musculo_1.data
+    musculo_2 = form.musculo_2.data
+    musculo_3 = form.musculo_3.data
+    exercicio_1 = form.exercicio_1.data
+    exercicio_2 = form.exercicio_2.data
+    exercicio_3 = form.exercicio_3.data
+    exercicio_4 = form.exercicio_4.data
+    exercicio_5 = form.exercicio_5.data
+    exercicio_6 = form.exercicio_6.data
+    exercicio_7 = form.exercicio_7.data
+    exercicio_8 = form.exercicio_8.data
+    exercicio_9 = form.exercicio_9.data
+    treino = Treino.query.filter_by(nome=nome).first()
+
+    if treino:
+        flash('Treino Diário já existente')
+        return redirect(url_for('index'))
+
+    nova_relacao_musculo = RelacaoMusculo(ref_1=musculo_1, ref_2=musculo_2, ref_3=musculo_3)
+    nova_relacao_exercicio = RelacaoExercicio(ref_1=exercicio_1, ref_2=exercicio_2, ref_3=exercicio_3,
+                                              ref_4=exercicio_4, ref_5=exercicio_5, ref_6=exercicio_6,
+                                              ref_7=exercicio_7, ref_8=exercicio_8, ref_9=exercicio_9)
+    db.session.add(nova_relacao_musculo, nova_relacao_exercicio)
+    db.session.commit()
+    arquivo = request.files["arquivo"]
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{nova_relacao_musculo.id}-{timestamp}.jpg')
+    arquivo.save(f'{upload_path}/capa{nova_relacao_exercicio.id}-{timestamp}.jpg')
+
+    novo_treino_diario = Treino(nome=nome, relacao_musculo=nova_relacao_musculo,
+                                relacao_exercicio=nova_relacao_exercicio)
+    db.session.add(novo_treino_diario)
+    db.session.commit()
+
+    arquivo = request.files["arquivo"]
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{novo_treino_diario.id}-{timestamp}.jpg')
+
+    return redirect(url_for('index'))
+
+
+@app.route('/criar_exercicio', methods=['POST', ])
+def criar_exercicio():
+    form = FormularioExercicio(request.form)
+
+    if not form.validate_on_submit():
+        return redirect(url_for('novo_exercicio'))
+
+    nome = form.nome.data
+    descricao = form.descricao.data
+    exercicio = Exercicio.query.filter_by(nome=nome).first()
+
+    if exercicio:
+        flash('Exercício já existente')
+        return redirect(url_for('index'))
+
+    musculo_1 = form.musculo_1.data
+    musculo_2 = form.musculo_2.data
+    musculo_3 = form.musculo_3.data
+
+    nova_relacao_musculo = RelacaoMusculo(ref_1=musculo_1, ref_2=musculo_2, ref_3=musculo_3)
+    db.session.add(nova_relacao_musculo)
+    db.session.commit()
+    arquivo = request.files["arquivo"]
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{nova_relacao_musculo.id}-{timestamp}.jpg')
+
+    novo_exercicio = Exercicio(nome=nome, relacao_musculo=nova_relacao_musculo,
+                                descricao=descricao)
+    db.session.add(novo_exercicio)
+    db.session.commit()
+
+    arquivo = request.files["arquivo"]
+    upload_path = app.config['UPLOAD_PATH']
+    timestamp = time.time()
+    arquivo.save(f'{upload_path}/capa{novo_exercicio.id}-{timestamp}.jpg')
 
     return redirect(url_for('index'))
 

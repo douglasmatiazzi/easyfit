@@ -1,0 +1,75 @@
+{% extends "template.html" %}
+{% block conteudo %}
+    <form class="formularioJogo" action="{{ url_for('criar_treino_diario') }}" method="post" enctype="multipart/form-data">
+
+        <figure class="img-thumbnail col-md-4">
+            <img class="img-fluid" src="{{ url_for('imagem', nome_arquivo='capa_padrao.jpg') }}">
+            <figcaption>
+                <label class="fileContainer">
+                    Mudar Capa
+                    <input type="file" name="arquivo" accept=".jpg">
+                </label>
+            </figcaption>
+        </figure>
+
+        <fieldset>
+            {{ form.csrf_token() }}
+            <div class="form-group inputBox">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.musculo_1.label(class="form-label") }}
+                {{ form.musculo_1(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.musculo_2.label(class="form-label") }}
+                {{ form.musculo_2(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.musculo_3.label(class="form-label") }}
+                {{ form.musculo_3(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_1.label(class="form-label") }}
+                {{ form.exercicio_1(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_2.label(class="form-label") }}
+                {{ form.exercicio_2(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_3.label(class="form-label") }}
+                {{ form.exercicio_3(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_4.label(class="form-label") }}
+                {{ form.exercicio_4(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_5.label(class="form-label") }}
+                {{ form.exercicio_5(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_6.label(class="form-label") }}
+                {{ form.exercicio_6(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_7.label(class="form-label") }}
+                {{ form.exercicio_7(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_8.label(class="form-label") }}
+                {{ form.exercicio_8(class="form-control") }}
+            </div>
+            <div class="form-group inputBox">
+                {{ form.exercicio_9.label(class="form-label") }}
+                {{ form.exercicio_9(class="form-control") }}
+            </div>
+            <div class="form-group buttons">
+                {{ form.salvar(class="btn btn-primary") }}
+                <a class="btn btn-danger" href="{{ url_for('index') }}">Voltar</a>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
