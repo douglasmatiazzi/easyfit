@@ -5,12 +5,8 @@ from wtforms import StringField, validators, SubmitField, PasswordField, SelectF
 
 from models import RelacaoMusculo, RelacaoExercicio, Treino, Musculo, Exercicio
 
-
-lista_treinos = [(g.id, g.nome) for g in Treino.query.order_by('id')]
-lista_musculos = [(g.id, g.nome) for g in Musculo.query.order_by('id')]
-lista_exercicios = [(g.id, g.nome) for g in Exercicio.query.order_by('id')]
-
 class FormularioTreinoCompleto(FlaskForm):
+    lista_treinos = [(g.id, g.nome) for g in Treino.query.order_by('id')]
     nome = StringField('Nome do Treino', [validators.DataRequired(), validators.Length(min=1, max=255)])
     nivel = SelectField('Nível', choices=['Iniciante', 'Intermediário', 'Avançado'])
     objetivo = SelectField('Objetívo', choices=['Hipertrofia', 'Força', 'Resistência'])
@@ -24,6 +20,8 @@ class FormularioTreinoCompleto(FlaskForm):
     salvar = SubmitField('Salvar')
 
 class FormularioTreinoDiario(FlaskForm):
+    lista_musculos = [(g.id, g.nome) for g in Musculo.query.order_by('id')]
+    lista_exercicios = [(g.id, g.nome) for g in Exercicio.query.order_by('id')]
     nome = StringField('Nome do Treino Diário', [validators.DataRequired(), validators.Length(min=1, max=255)])
     musculo_1 = SelectField('musculo_1', choices=lista_musculos)
     musculo_2 = SelectField('musculo_2', choices=lista_musculos)
@@ -40,6 +38,8 @@ class FormularioTreinoDiario(FlaskForm):
     salvar = SubmitField('Salvar')
 
 class FormularioExercicio(FlaskForm):
+    lista_musculos = [(g.id, g.nome) for g in Musculo.query.order_by('id')]
+    lista_exercicios = [(g.id, g.nome) for g in Exercicio.query.order_by('id')]
     nome = StringField('Nome do Exercício', [validators.DataRequired(), validators.Length(min=1, max=255)])
     musculo_1 = SelectField('musculo_1', choices=lista_musculos)
     musculo_2 = SelectField('musculo_2', choices=lista_musculos)

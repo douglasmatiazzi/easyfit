@@ -98,23 +98,18 @@ def criar_treino_diario():
     nova_relacao_exercicio = RelacaoExercicio(ref_1=exercicio_1, ref_2=exercicio_2, ref_3=exercicio_3,
                                               ref_4=exercicio_4, ref_5=exercicio_5, ref_6=exercicio_6,
                                               ref_7=exercicio_7, ref_8=exercicio_8, ref_9=exercicio_9)
+
     db.session.add(nova_relacao_musculo, nova_relacao_exercicio)
     db.session.commit()
-    arquivo = request.files["arquivo"]
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    arquivo.save(f'{upload_path}/capa{nova_relacao_musculo.id}-{timestamp}.jpg')
-    arquivo.save(f'{upload_path}/capa{nova_relacao_exercicio.id}-{timestamp}.jpg')
 
-    novo_treino_diario = Treino(nome=nome, relacao_musculo=nova_relacao_musculo,
-                                relacao_exercicio=nova_relacao_exercicio)
+    nova_relacao_musculo = RelacaoMusculo.query.filter_by(ref_1=musculo_1, ref_2=musculo_2, ref_3=musculo_3).first()
+    nova_relacao_exercicio = RelacaoExercicio.query.filter_by(ref_1=exercicio_1, ref_2=exercicio_2, ref_3=exercicio_3,
+                                                              ref_4=exercicio_4, ref_5=exercicio_5, ref_6=exercicio_6,
+                                                              ref_7=exercicio_7, ref_8=exercicio_8, ref_9=exercicio_9).first()
+    novo_treino_diario = Treino(nome=nome, relacao_musculo=nova_relacao_musculo.id,
+                                relacao_exercicio=nova_relacao_exercicio.id)
     db.session.add(novo_treino_diario)
     db.session.commit()
-
-    arquivo = request.files["arquivo"]
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    arquivo.save(f'{upload_path}/capa{novo_treino_diario.id}-{timestamp}.jpg')
 
     return redirect(url_for('index'))
 
@@ -141,23 +136,13 @@ def criar_exercicio():
     nova_relacao_musculo = RelacaoMusculo(ref_1=musculo_1, ref_2=musculo_2, ref_3=musculo_3)
     db.session.add(nova_relacao_musculo)
     db.session.commit()
-    arquivo = request.files["arquivo"]
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    arquivo.save(f'{upload_path}/capa{nova_relacao_musculo.id}-{timestamp}.jpg')
 
-    novo_exercicio = Exercicio(nome=nome, relacao_musculo=nova_relacao_musculo,
+    nova_relacao_musculo = RelacaoMusculo.query.filter_by(ref_1=musculo_1, ref_2=musculo_2, ref_3=musculo_3).first()
+    novo_exercicio = Exercicio(nome=nome, relacao_musculo=nova_relacao_musculo.id,
                                 descricao=descricao)
     db.session.add(novo_exercicio)
     db.session.commit()
-
-    arquivo = request.files["arquivo"]
-    upload_path = app.config['UPLOAD_PATH']
-    timestamp = time.time()
-    arquivo.save(f'{upload_path}/capa{novo_exercicio.id}-{timestamp}.jpg')
-
     return redirect(url_for('index'))
-
 
 @app.route('/treino/<int:id>')
 def treino(id):
